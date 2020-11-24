@@ -2,18 +2,8 @@ import axios from "axios";
 import { baseUrl } from "../config";
 import { requestInProgress } from "./endpoints";
 import finalFetch from "./finalFetch";
-//import alertState from "../store/alertState";
-//import { Auth } from "aws-amplify";
-
-const defaultHeaders = {
-  "Content-Type": "application/json",
-  "Authorization": "",
-};
-
-const getHeaders = async () => {
-  defaultHeaders.Authorization = "Bearer " + (await getToken());
-  return defaultHeaders;
-};
+import { getToken } from "../token";
+import { getDefaultHeaders } from "../defaultHeaders";
 
 export async function Fetch(
   endpoint,
@@ -27,7 +17,7 @@ export async function Fetch(
 ) {
   const CancelToken = axios.CancelToken;
 
-  let headers = await getHeaders();
+  let headers = getDefaultHeaders();
   if (reqHeaders) {
     headers = { ...headers, ...reqHeaders };
   }
@@ -39,8 +29,9 @@ export async function Fetch(
     // cancel the request if the request is already in progress
     requestInProgress[endpointName]();
   }
+
   if (blockIfAlreadyInProgress) {
-    Promise.reject("blocked");
+    Promise.reject({code: 1, "request already in progress"});
   }
     return await finalFetch({
       method: type,

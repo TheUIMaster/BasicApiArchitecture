@@ -1,4 +1,4 @@
-export let getToken = async () => {
+export let getToken = () => {
     // let jwtToken = "";
     // let user = await Auth.currentAuthenticatedUser();
     // const signInUserSession = user.getSignInUserSession();

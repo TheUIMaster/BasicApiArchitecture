@@ -8,6 +8,6 @@ let endpoints = {
 
 export const users = {
     getUser: (id) => { 
-        return Fetch("/Users/getprofile?id=" + id, );
+        return Fetch("/Users/getprofile?id=" + id,  );
     }
 }
